@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 
 function App() {
@@ -6,6 +6,20 @@ function App() {
   const [length , setlength] = useState(8);
   const [numberAllowed , setNumberAllowed] = useState(false);
   const [charAllowed , setchar] = useState(false);
+
+  let passwordGenerator = useCallback(()=> {
+    let pass = "";
+    let string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    if(numberAllowed == true) string += "0123456789"; 
+    if(charAllowed == true) string += "$@_-+=&*#("; 
+
+    for (let index = 1; index < length; index++){
+      let char = Math.floor(Math.random() * string.length + 1)
+      let pass = string[char]
+1     
+    }
+    setPassword(pass);
+  }, [length,numberAllowed,charAllowed,setPassword])
 
   return (
     <>
@@ -17,7 +31,7 @@ function App() {
    </div>
    <div className='flex flex-row text-sm gap-x-2'>
     <div className='flex items-center gap-x-1'>
-      <input type="range" min={8} max={50} value={length} onChange={(e) => {
+      <input  className='cursor-pointer' type="range" min={8} max={50}  value={length} onChange={(e) => {
         setlength(e.target.value)
       }} />
       <label className='text-yellow-400'>Lenght {length}</label>
