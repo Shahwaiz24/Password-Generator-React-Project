@@ -4,6 +4,8 @@ import { useState } from 'react'
 function App() {
   const [password , setPassword] = useState("");
   const [length , setlength] = useState(8);
+  const [numberAllowed , setNumberAllowed] = useState(false);
+  const [charAllowed , setchar] = useState(false);
 
   return (
     <>
@@ -20,6 +22,22 @@ function App() {
       }} />
       <label className='text-yellow-400'>Lenght {length}</label>
 
+    </div>
+    <div className='flex items-center gap-x-1'>
+      <input type="checkbox"  value={numberAllowed} onChange={() => {
+        setNumberAllowed((prev) => {
+          prev = !prev
+        })
+      }}/>
+      <label className='text-white'>Number</label>
+    </div>
+    <div className='flex items-center gap-x-1'>
+      <input type="checkbox"  value={charAllowed} onChange={() => {
+        setchar((prev) => {
+          prev = !prev
+        })
+      }}/>
+      <label className='text-white'>Characters</label>
     </div>
    </div>
 
