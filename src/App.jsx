@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 
 function App() {
-  const [password,setPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [btnColor, setBtnColor] = useState("bg-blue-700");
   const [length,setlength] = useState(8);
   const [numberAllowed,setNumberAllowed] = useState(false);
   const [charAllowed,setchar] = useState(false);
@@ -26,7 +27,20 @@ function App() {
     setPassword(pass);
   }, [length, numberAllowed, charAllowed, setPassword])
  
- 
+  let passwordRef = useRef(null);
+  const copyPassword = useCallback(async () => {
+    try {
+      setBtnColor("bg-gray-500"); // First color change
+      await window.navigator.clipboard.writeText(password);
+
+      await new Promise((resolve) => setTimeout(resolve, 400)); // 5-second delay
+
+      setBtnColor("bg-blue-700"); // Change color back
+    } catch (error) {
+      console.error("Error while copying:", error);
+    }
+  }, [password]);
+
   useEffect(() => {
     passwordGenerator()
 
@@ -39,7 +53,9 @@ function App() {
    <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 py-4 bg-gray-700' >
    <div className='flex flex-row rounded-lg mb-4 overflow-hidden'>
     <input type="text" readOnly value={password}  placeholder='Secure Password' className='w-full py-1 px-3 outline-none' />
-    <button className='outline-none bg-blue-700 px-3 py-0.5 shrink-0' >copy</button>
+          <button  className={`outline-none  ${btnColor}   px-3 py-0.5 shrink-0  text-white`} ref={passwordRef} onClick={() => {
+            copyPassword()
+    }} >copy</button>
    </div>
    <div className='flex flex-row text-sm gap-x-2'>
     <div className='flex items-center gap-x-1'>
